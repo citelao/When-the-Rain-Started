@@ -18,23 +18,6 @@ function generate_filters(drawable, frames) {
 var FRAMES = 8;
 var jitter_filters = generate_filters(n, FRAMES);
 
-var last = 0;
-var frame = 0;
-function animate_jitter(time) {
-	if(time - last < 1 / 24.1 * 1000) {
-		return;
-	}
-
-	frame = (frame + 1) % 8;
-	n.attr({
-		filter: "url(#" + jitter_filters[frame].node.id + ")"
-	});
-
-	window.requestAnimationFrame(animate_jitter);
-}
-window.requestAnimationFrame(animate_jitter);
-
-
 for(var street = 0; street < 2; street++) {
 	var offset = street * 700 + 50;
 	for (var j = 1; j >= 0; j--) {
@@ -55,3 +38,29 @@ car.attr({
 });
 
 car.animate(3000).move(650, -300).loop();
+
+// var em = new Emitter(400, 0, 0, 1200, 1200);
+// em.draw(n, function(d) {
+// 	return d.rect(10,10);
+// });
+
+// ANIMATE!
+var last = 0;
+var frame = 0;
+function animate_jitter(time) {
+	if(time - last < 1 / 24.1 * 1000) {
+		window.requestAnimationFrame(animate_jitter);
+		return;
+	}
+
+	frame = (frame + 1) % 8;
+	n.attr({
+		filter: "url(#" + jitter_filters[frame].node.id + ")"
+	});
+
+	// em.update(time - last);
+
+	last = time;
+	window.requestAnimationFrame(animate_jitter);
+}
+window.requestAnimationFrame(animate_jitter);
