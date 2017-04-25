@@ -42,11 +42,9 @@ function animate(time) {
 		return;
 	}
 
-	// // Update the scene
-	SCENES[current_scene].update(dt);
+	// Update the scene
+	SCENES[current_scene].update(dt, n);
 
-	// // Draw the scene
-	SCENES[current_scene].draw(n);
 
 
 	// Change the jitter

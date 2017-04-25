@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Amatic+SC:400,700');
+
 html,
 body,
 div,
@@ -6,6 +8,10 @@ svg {
 	height: 100%;
 	margin: 0;
 	padding: 0;
+}
+
+html: {
+  font-family: 'Amatic SC', cursive;
 }
 
 @-webkit-keyframes jitter {
@@ -23,4 +29,13 @@ svg {
 @keyframes jitter {
   0%   { opacity: 0; }
   100% { opacity: 1; }
+}
+
+.no-touch {
+  pointer-events: none;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
