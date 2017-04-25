@@ -3,11 +3,10 @@ function Scene_1(draw) {
 
 	this.is_running = false;
 
-	this.manual_spawns = [];
+	this._spawns = [];
 
 	this.spawn_rate = 3000;
 	this.time_since_last_spawn = 0;
-	this.auto_spawns = [];
 }
 
 Scene_1.prototype.update = function(dt) {
@@ -25,15 +24,17 @@ Scene_1.prototype.update = function(dt) {
 		}
 
 		for (var i = 0; i < 1 / this.spawn_rate; i++) {
-			this._spawn_drop(Math.random() * window.innerWidth,
+			this._spawn_drop(
+				Math.random() * window.innerWidth,
 				Math.random() * window.innerHeight, 
-				true);
+				true
+			);
 		}
 	}
 
 	// Update drops
-	for (var i = 0; i < this.manual_spawns.length; i++) {
-		var spawn = this.manual_spawns[i];
+	for (var i = 0; i < this._spawns.length; i++) {
+		var spawn = this._spawns[i];
 		if(!spawn.spawned) { return; }
 		if(spawn.dead) { return; }
 
@@ -58,7 +59,7 @@ Scene_1.prototype.click = function(e) {
 	this._spawn_drop(e.offsetX, e.offsetY, true);
 }
 
-Scene_1.prototype._spawn_drop = function(x, y, is_manual) {
+Scene_1.prototype._spawn_drop = function(x, y) {
 	var sp = {
 		x: x,
 		y: y,
@@ -68,24 +69,14 @@ Scene_1.prototype._spawn_drop = function(x, y, is_manual) {
 		lifetime: 0
 	};
 
-	if(is_manual) {
-		for (var i = 0; i < this.manual_spawns.length; i++) {
-			if(this.manual_spawns[i].dead) {
-				this.manual_spawns[i] = sp;
-				return this.manual_spawns[i];
-			}
+	for (var i = 0; i < this._spawns.length; i++) {
+		if(this._spawns[i].dead) {
+			this._spawns[i] = sp;
+			return this._spawns[i];
 		}
-
-		this.manual_spawns.push(sp);
-	} else {
-		for (var i = 0; i < this.auto_spawns.length; i++) {
-			if(this.auto_spawns[i].dead) {
-				this.auto_spawns[i] = sp;
-				return this.auto_spawns[i];
-			}
-		}
-		this.auto_spawns.push(sp);
 	}
+
+	this._spawns.push(sp);
 }
 
 Scene_1.prototype._draw_drop = function() {
@@ -97,8 +88,8 @@ Scene_1.prototype.draw = function(draw) {
 		return;
 	}
 
-	for (var i = 0; i < this.manual_spawns.length; i++) {
-		var spawn = this.manual_spawns[i];
+	for (var i = 0; i < this._spawns.length; i++) {
+		var spawn = this._spawns[i];
 		if(!spawn.spawned) {
 			spawn.el = draw.circle(10).attr({
 				fill: 'none',
@@ -107,14 +98,6 @@ Scene_1.prototype.draw = function(draw) {
 				cx: spawn.x,
 				cy: spawn.y
 			});
-			spawn.spawned = true;
-		}
-	}
-
-	for (var i = 0; i < this.auto_spawns.length; i++) {
-		var spawn = this.auto_spawns[i];
-		if(!spawn.spawned) {
-			// spawn.el = 	draw_raindrop(draw, spawn.x, spawn.y)
 			spawn.spawned = true;
 		}
 	}
