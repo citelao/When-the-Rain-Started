@@ -45,29 +45,20 @@ renderer.view.style["margin-bottom"] = "-20px";
 renderer.view.style["margin-right"] = "-20px";
 // renderer.autoResize = true;
 renderer.resize(window.innerWidth + 40, window.innerHeight + 40);
+renderer.backgroundColor = 0xFFFFFF;
+
+var stage = new PIXI.Container();
+
+var scene_1 = new Scene_1(stage);
+
+renderer.plugins.interaction.on('mouseup', function(e){
+    scene_1.click(e);
+});
+
 
 // ANIMATE!
 var last = 0; // STATE
 var frame = 0; // STATE
-
-var stage = new PIXI.Container();
-
-// RAINDROP
-var raindrop = new PIXI.Graphics();
-raindrop.lineStyle(4, 0x0033FF, 1);
-raindrop.drawCircle(0, 0, 50);
-
-var rainer = new Emitter({
-	parent: stage,
-	num_particles: 5000,
-	x: 0, 
-	y: 0,
-	width: renderer.view.width,
-	height: renderer.view.width,
-	emit_rate: 500,
-	texture: raindrop.generateCanvasTexture(PIXI.SCALE_MODES.DEFAULT, window.devicePixelRatio)
-});
-
 function animate(time) {
 	var dt = time - last;
 
@@ -77,9 +68,15 @@ function animate(time) {
 		return;
 	}
 
-	rainer.update(dt);
+	scene_1.update(dt);	
 
 	renderer.render(stage);
+
+	var ease = Math.max(0, Math.min((time - 13000) / 8000, 1));
+	var red = ((1 - ease) * 0xFF0000 + ease * 0x060000) & 0xFF0000;
+	var green = ((1 - ease) * 0xFF00 + ease * 0x1600) & 0xFF00;
+	var blue = ((1 - ease) * 0xFF + ease * 0x39) & 0xFF;
+	renderer.backgroundColor = red + green + blue;
 
 	frame = (frame + 1) % FRAMES;
 	renderer.view.style.filter = "url(#" + JITTER_FILTERS[frame].node.id + ")";
