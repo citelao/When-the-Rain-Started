@@ -49,10 +49,13 @@ renderer.backgroundColor = 0xFFFFFF;
 
 var stage = new PIXI.Container();
 
-var scene_1 = new Scene_1(stage);
+var SCENES = [
+	new Scene_1(stage)
+]
+var current_scene = SCENES[0];
 
 renderer.plugins.interaction.on('mouseup', function(e){
-    scene_1.click(e);
+    current_scene.click(e);
 });
 
 
@@ -68,15 +71,11 @@ function animate(time) {
 		return;
 	}
 
-	scene_1.update(dt);	
+	current_scene.update(dt, stage);
 
 	renderer.render(stage);
 
-	var ease = Math.max(0, Math.min((time - 13000) / 8000, 1));
-	var red = ((1 - ease) * 0xFF0000 + ease * 0x060000) & 0xFF0000;
-	var green = ((1 - ease) * 0xFF00 + ease * 0x1600) & 0xFF00;
-	var blue = ((1 - ease) * 0xFF + ease * 0x39) & 0xFF;
-	renderer.backgroundColor = red + green + blue;
+	renderer.backgroundColor = current_scene.backgroundColor;
 
 	frame = (frame + 1) % FRAMES;
 	renderer.view.style.filter = "url(#" + JITTER_FILTERS[frame].node.id + ")";
