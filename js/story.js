@@ -43,15 +43,17 @@ function animate(time) {
 	}
 
 	// Update the scene
-	SCENES[current_scene].update(dt, n);
+	// SCENES[current_scene].update(dt, n);
 
 
 
-	// Change the jitter
+	// // Change the jitter
 	frame = (frame + 1) % FRAMES;
-	n.attr({
-		filter: "url(#" + JITTER_FILTERS[frame].node.id + ")"
-	});
+	// n.attr({
+	// 	filter: "url(#" + JITTER_FILTERS[frame].node.id + ")"
+	// });
+	document.getElementById('test').style.filter = "url(#" + JITTER_FILTERS[frame].node.id + ")";
+	console.log(dt);
 
 	last = time;
 	window.requestAnimationFrame(animate);

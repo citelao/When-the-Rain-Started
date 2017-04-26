@@ -80,8 +80,13 @@ Scene_1.prototype.update = function(dt, draw) {
 	for (var i = 0; i < this._spawns.length; i++) {
 		var spawn = this._spawns[i];
 
+		if(spawn.dead) { return; }
+
 		if(!spawn.spawned) {
-			spawn.el = draw.circle(10).attr({
+			if(!spawn.el) {
+				spawn.el = draw.circle(10);
+			}
+			spawn.el.attr({
 				fill: 'none',
 				stroke: '#BCBCFF',
 				'stroke-width': '3',
@@ -91,19 +96,19 @@ Scene_1.prototype.update = function(dt, draw) {
 			spawn.spawned = true;
 		}
 
-		if(spawn.dead) { return; }
-
 		spawn.lifetime += dt;
 
 		var DURATION = 500;
-		if(spawn.lifetime > DURATION) {
-			spawn.el.remove();
-		}
 
 		spawn.el.attr({
 			r: spawn.lifetime * 40 / DURATION  + 10,
 			opacity: 1 - spawn.lifetime / DURATION
 		});
+
+		if(spawn.lifetime > DURATION) {
+			spawn.el.remove();
+			spawn.dead = true;
+		}
 	}
 
 }
@@ -127,6 +132,7 @@ Scene_1.prototype._spawn_drop = function(x, y) {
 	for (var i = 0; i < this._spawns.length; i++) {
 		if(this._spawns[i].dead) {
 			this._spawns[i] = sp;
+
 			return this._spawns[i];
 		}
 	}

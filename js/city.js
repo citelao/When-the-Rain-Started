@@ -7,7 +7,7 @@ function generate_filters(drawable, frames) {
 	for(var i = 0; i < frames; i++) {
 		drawable.filter(function(add) {
 			var dp = add.turbulence(0.01, 6, i, "noStitch", "fractalNoise");
-			var turb = dp.displacementMap(turb, 4, "R", "G").in(add.source);
+			var turb = dp.displacementMap(turb, 6, "R", "G").in(add.source);
 		});
 		filters[i] = drawable.filterer;
 		drawable.unfilter();
@@ -22,8 +22,27 @@ for(var street = 0; street < 2; street++) {
 	var offset = street * 700 + 50;
 	for (var j = 1; j >= 0; j--) {
 		for (var i = 5; i >= 0; i--) {
-			var b = draw_building(n);
-			b.attr({
+			var nest = n.nested();
+
+			var a = nest.polygon("0,200 100,300 300,300 300,100 200,0")
+				.fill("#111");
+			nest.attr({
+				x: offset + 220 * j,
+				y: -50 + 220 * i
+			});
+		}
+	}
+}
+
+for(var street = 0; street < 2; street++) {
+	var offset = street * 700 + 50;
+	for (var j = 1; j >= 0; j--) {
+		for (var i = 5; i >= 0; i--) {
+			var nest = n.nested();
+
+
+			var b = draw_building(nest);
+			nest.attr({
 				x: offset + 220 * j,
 				y: -50 + 220 * i
 			});
@@ -53,7 +72,7 @@ function animate_jitter(time) {
 		return;
 	}
 
-	frame = (frame + 1) % 8;
+	frame = (frame + 1) % FRAMES;
 	n.attr({
 		filter: "url(#" + jitter_filters[frame].node.id + ")"
 	});
