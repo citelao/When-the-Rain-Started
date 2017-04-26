@@ -64,22 +64,23 @@ var rainer = new Emitter({
 	y: 0,
 	width: renderer.view.width,
 	height: renderer.view.width,
+	emit_rate: 500,
 	texture: raindrop.generateCanvasTexture(PIXI.SCALE_MODES.DEFAULT, window.devicePixelRatio)
 });
 
 function animate(time) {
 	var dt = time - last;
 
-	rainer.update(dt);
-
-	renderer.render(stage);
-
-
 	// Change the jitter @ 24FPS
 	if(dt < 1 / 24.1 * 1000) {
 		window.requestAnimationFrame(animate);
 		return;
 	}
+
+	rainer.update(dt);
+
+	renderer.render(stage);
+
 	frame = (frame + 1) % FRAMES;
 	renderer.view.style.filter = "url(#" + JITTER_FILTERS[frame].node.id + ")";
 
