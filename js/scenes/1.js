@@ -17,8 +17,8 @@ function Scene_1(stage, w, h) {
 		num_particles: 5000,
 		x: 0, 
 		y: 0,
-		width: w,
-		height: h,
+		width: w / 2,
+		height: h / 2,
 		emit_rate: 2000,
 		texture: this.raindrop.generateCanvasTexture(PIXI.SCALE_MODES.DEFAULT, window.devicePixelRatio),
 		on_emit: function() {
@@ -34,9 +34,9 @@ function Scene_1(stage, w, h) {
 		elapsed: 0
 	};
 	this.texts = [
-		{ content: "sometimes", delay: 6000, x: 50, y: 100 },
-		{ content: "it rains", delay: 4000, x: 50, y: 350 },
-		{ content: "when I'm sad", delay: 3000, x: 50, y: 600 }
+		{ content: "sometimes", delay: 11000, x: 50, y: 100 },
+		{ content: "it rains", delay: 1500, x: 50, y: 350 },
+		{ content: "when I'm sad", delay: 1500, x: 50, y: 600 }
 	];
 
 	this.elapsed = 0;
@@ -75,12 +75,11 @@ Scene_1.prototype.update = function(dt, stage) {
 
 			var message = new PIXI.Text(
 				text.content,
-			  	{fontFamily: 'Amatic SC', fontSize: 300, fill: "#fff", padding: 20}
+			  	{fontFamily: 'Amatic SC', fontSize: 300, fill: "#526287", padding: 40}
 			);
 
 			message.position.set(text.x, text.y);
-			message.zOrder = -5;
-			stage.addChild(message);
+			stage.addChildAt(message, 0);
 
 			if(this.text_state.index === this.texts.length) {
 				// item.after(function() {

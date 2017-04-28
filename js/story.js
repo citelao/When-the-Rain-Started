@@ -62,9 +62,9 @@ function begin() {
 	var SCENES = [
 		new Scene_1(stage, renderer.view.width, renderer.view.height),
 		// TODO 2
-		new Scene_3(stage, renderer.view.width, renderer.view.height)
+		// new Scene_3(stage, renderer.view.width, renderer.view.height)
 	]
-	var current_scene = SCENES[1];
+	var current_scene = SCENES[0];
 
 	renderer.plugins.interaction.on('mouseup', function(e){
 	    current_scene.click(e);
