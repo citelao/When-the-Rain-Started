@@ -19,7 +19,7 @@ function Scene_3(stage, w, h) {
 		[ 62,20 ]
 	];
 	var umbrella = new PIXI.Graphics();
-	umbrella.beginFill(0x233254);
+	umbrella.beginFill(0x111111);
 	umbrella.moveTo(umbrella_pts[0][0], umbrella_pts[0][1]);
 	for (var i = 0; i < umbrella_pts.length; i++) {
 		var second = i === umbrella_pts.length - 1
@@ -94,7 +94,7 @@ function Scene_3(stage, w, h) {
 		y: 0,
 		width: this.w,
 		height: this.h,
-		emit_rate: 0.05,
+		emit_rate: 0.025,
 		texture: this.raindrop.generateCanvasTexture(PIXI.SCALE_MODES.DEFAULT, window.devicePixelRatio),
 		// on_emit: function() {
 		// 	var MAX_EMIT = 0.5;
