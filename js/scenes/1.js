@@ -1,4 +1,4 @@
-function Scene_1(stage) {
+function Scene_1(stage, w, h) {
 	var that = this;
 
 	this.is_running = false;
@@ -17,8 +17,8 @@ function Scene_1(stage) {
 		num_particles: 5000,
 		x: 0, 
 		y: 0,
-		width: renderer.view.width,
-		height: renderer.view.width,
+		width: w,
+		height: h,
 		emit_rate: 2000,
 		texture: this.raindrop.generateCanvasTexture(PIXI.SCALE_MODES.DEFAULT, window.devicePixelRatio),
 		on_emit: function() {
@@ -50,14 +50,16 @@ Scene_1.prototype.update = function(dt, stage) {
 	this.rainer.update(dt);
 
 	// BG color
-	this.elapsed += dt;
 	var DELAY = 7000;
 	var DURATION = 3000;
-	var ease = Math.max(0, Math.min((this.elapsed - DELAY) / DURATION, 1));
-	var red = ((1 - ease) * 0xFF0000 + ease * 0x060000) & 0xFF0000;
-	var green = ((1 - ease) * 0xFF00 + ease * 0x1600) & 0xFF00;
-	var blue = ((1 - ease) * 0xFF + ease * 0x39) & 0xFF;
-	this.backgroundColor = red + green + blue;
+	if(this.elapsed < DURATION + DELAY + 100) {
+		this.elapsed += dt;
+		var ease = Math.max(0, Math.min((this.elapsed - DELAY) / DURATION, 1));
+		var red = ((1 - ease) * 0xFF0000 + ease * 0x060000) & 0xFF0000;
+		var green = ((1 - ease) * 0xFF00 + ease * 0x1600) & 0xFF00;
+		var blue = ((1 - ease) * 0xFF + ease * 0x39) & 0xFF;
+		this.backgroundColor = red + green + blue;
+	}
 
 	// Draw the words onscreen
 	if(this.text_state.index < this.texts.length) {
@@ -73,7 +75,7 @@ Scene_1.prototype.update = function(dt, stage) {
 
 			var message = new PIXI.Text(
 				text.content,
-			  	{fontFamily: 'Amatic SC', fontSize: 300, fill: "#fff"}
+			  	{fontFamily: 'Amatic SC', fontSize: 300, fill: "#fff", padding: 20}
 			);
 
 			message.position.set(text.x, text.y);

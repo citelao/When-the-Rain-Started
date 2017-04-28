@@ -34,7 +34,7 @@ Emitter.prototype.emitAtLocation = function(x, y) {
 	this.particles[locs[0]].x = x;
 	this.particles[locs[0]].y = y;
 
-	console.log(locs[0], this.particles[locs[0]])
+	// console.log(locs[0], this.particles[locs[0]])
 }
 
 Emitter.prototype._getSpawnLocs = function(to_emit, deads) {
