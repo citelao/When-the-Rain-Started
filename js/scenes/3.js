@@ -45,7 +45,7 @@ function Scene_3(stage, w, h) {
 	this.umbrellas = new PIXI.Sprite();
 	// this.umbrellas.x = 500;
 	// this.umbrellas.y = 100;
-	const UMBRELLAS = 80;
+	const UMBRELLAS = 400;
 	for (var i = 0; i < UMBRELLAS; i++) {
 		var clone = new PIXI.Sprite(tex);
 		clone.anchor.set(0.5, 0.5);
@@ -57,39 +57,63 @@ function Scene_3(stage, w, h) {
 
 	var text = new PIXI.Text(
 		"and I know",
-	  	{fontFamily: 'Amatic SC', fontSize: 300, fill: "#fff", padding: 40}
+	  	{fontFamily: 'Amatic SC', fontSize: 300, fill: "#526287", padding: 40}
 	);
 	var only = new PIXI.Text(
 		"that only I",
-	  	{fontFamily: 'Amatic SC', fontSize: 300, fill: "#fff", padding: 40}
+	  	{fontFamily: 'Amatic SC', fontSize: 300, fill: "#526287", padding: 40}
 	);
 	var control = new PIXI.Text(
 		"control my mood",
-	  	{fontFamily: 'Amatic SC', fontSize: 200, fill: "#fff", padding: 40}
+	  	{fontFamily: 'Amatic SC', fontSize: 200, fill: "#526287", padding: 40}
 	);
 	only.y = 300;
 	control.y = 600;
 	// text.mask = this.umbrellas;
-	this.umbrella = new PIXI.Container();
-	this.umbrella.addChild(text);
-	this.umbrella.addChild(only);
-	this.umbrella.addChild(control);
+	this.text = new PIXI.Container();
+	this.text.addChild(text);
+	this.text.addChild(only);
+	this.text.addChild(control);
 
-	this.umbrella.x = 400;
-	this.umbrella.y = 40;
+	this.text.x = 400;
+	this.text.y = 40;
+	stage.addChild(this.text);
 	// this.umbrellas.mask = this.umbrella;
 	// this.umbrella.mask = this.umbrellas;
 	// this.umbrella.anchor.set(0.5, 0.5);
 
 	// this.umbrella.addChild(this.umbrellas);
-	stage.addChild(this.umbrella);
+	this.raindrop = new PIXI.Graphics();
+	this.raindrop.lineStyle(2, 0x0033FF, 1);
+	this.raindrop.drawCircle(5, 5, 10);
+
+	this.rainer = new Emitter({
+		parent: stage,
+		num_particles: 5000,
+		x: 0, 
+		y: 0,
+		width: this.w,
+		height: this.h,
+		emit_rate: 0.05,
+		texture: this.raindrop.generateCanvasTexture(PIXI.SCALE_MODES.DEFAULT, window.devicePixelRatio),
+		// on_emit: function() {
+		// 	var MAX_EMIT = 0.5;
+		// 	if(that.rainer.emit_rate > MAX_EMIT) {
+		// 		that.rainer.emit_rate *= 0.85;
+		// 	}
+		// }
+	});
+
+
+
 	stage.addChild(this.umbrellas);
 
 	this.bob = 0;
 }
 
 Scene_3.prototype.update = function(dt, stage) {
-	// Test
+	this.rainer.update(dt);
+
 	var that = this;
 	var BOUNCE_AMOUNT = 0.06;
 	var WALK_SPEED = 0.02;
@@ -108,10 +132,10 @@ Scene_3.prototype.update = function(dt, stage) {
 		child.y -= WALK_SPEED * Math.max(1 - percentage, 0.5) * dt;
 
 		if(child.x < -32 || child.y < -32) {
-			child.x = (that.w + that.h) * Math.random();
-			child.y = (child.x > that.w) 
+			child.x = (that.w + that.h + 32) * Math.random();
+			child.y = (child.x > that.w + 32) 
 				? Math.random() * that.h
-				: that.h;
+				: that.h + 32;
 		}
 
 		if(child.y > that.openY) {
