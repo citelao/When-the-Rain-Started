@@ -70,6 +70,12 @@ function begin() {
 	    current_scene.click(e);
 	});
 
+	renderer.plugins.interaction.on('mousemove', function(e) { 
+		if(current_scene.move) {
+			current_scene.move(e);
+		}
+	});
+
 
 	// ANIMATE!
 	var last = 0; // STATE
