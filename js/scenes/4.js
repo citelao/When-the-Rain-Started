@@ -1,10 +1,10 @@
-// City scene
+// Universe
 
-// I like that
-// because it feels
-// like the world
-// is crying with me
-function Scene_2(w, h, next_scene) {
+// But sometimes
+// It feels like
+// I only control a few raindrops
+// And the whole universe is crying
+function Scene_4(w, h, next_scene) {
 	this.next_scene_fn = next_scene;
 
 	this.hint_timer = 0;
@@ -23,18 +23,23 @@ function Scene_2(w, h, next_scene) {
 		index: 0,
 		elapsed: 0
 	};
+
+// But sometimes
+// It feels like
+// I only control a few raindrops
+// And the whole universe is crying
 	this.texts = [
-		{ content: "I like that", delay: 3000, x: 50, y: 100 },
-		{ content: "because it feels", delay: 1500, x: 50, y: 250 },
-		{ content: "like the world", delay: 1500, x: 50, y: 400 },
-		{ content: "is crying with me", delay: 1500, x: 50, y: 550 },
+		{ content: "but sometimes", delay: 3000, x: 50, y: 100 },
+		{ content: "it feels like", delay: 1500, x: 50, y: 250 },
+		{ content: "I only control", delay: 1500, x: 50, y: 400 },
+		{ content: "a few raindrops", delay: 1500, x: 50, y: 550 },
 		{ content: "(dummy advance)", delay: 4000, x: 50, y: 600 }
 	];
 
 	this.elapsed = 0;
 }
 
-Scene_2.prototype.init = function(stage) {
+Scene_4.prototype.init = function(stage) {
 	var that = this;
 
 	var MIN_EMIT = 2000;
@@ -52,14 +57,14 @@ Scene_2.prototype.init = function(stage) {
 	this.messages = [];
 };
 
-Scene_2.prototype.destroy = function() {
+Scene_4.prototype.destroy = function() {
 	this.rainer.destroy();
 	this.messages.forEach(function(msg) {
 		msg.destroy();
 	})
 }
 
-Scene_2.prototype.update = function(dt, stage) {
+Scene_4.prototype.update = function(dt, stage) {
 	this.rainer.update(dt);
 
 	// Draw the words onscreen
@@ -90,5 +95,5 @@ Scene_2.prototype.update = function(dt, stage) {
 	}
 }
 
-Scene_2.prototype.click = function(e) {
+Scene_4.prototype.click = function(e) {
 }

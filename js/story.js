@@ -55,10 +55,7 @@ function begin() {
 
 	var stage = new PIXI.Container();
 
-	// STATE
-
-
-	// THAT FILTER
+	// STATE & FILTER
 	var shaderCode = document.getElementById("shader").innerHTML;
 	var state = {
 		current_scene_index: -1,
@@ -86,8 +83,10 @@ function begin() {
 	}
 	var SCENES = [
 		new Scene_1(w, h, next_scene),
-		// TODO 2
-		new Scene_3(w, h, next_scene)
+		new Scene_2(w, h, next_scene),
+		new Scene_3(w, h, next_scene),
+		new Scene_4(w, h, next_scene),
+		new Scene_5(w, h, next_scene)
 	]
 	next_scene();
 
@@ -106,7 +105,6 @@ function begin() {
 
 	// ANIMATE!
 	var last = 0; // STATE
-	var frame = 0; // STATE
 	function animate(time) {
 		var dt = time - last;
 
@@ -123,9 +121,6 @@ function begin() {
 		renderer.render(stage);
 
 		renderer.backgroundColor = state.current_scene.backgroundColor;
-
-		frame = (frame + 1) % FRAMES;
-		// renderer.view.style.filter = "url(#" + JITTER_FILTERS[frame].node.id + ")";
 
 		last = time;
 		window.requestAnimationFrame(animate);
