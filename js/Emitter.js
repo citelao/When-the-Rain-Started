@@ -18,8 +18,9 @@ function Emitter(o) {
 	this._parent.addChild(this.container);
 }
 
-Emitter.prototype.clean = function() {
+Emitter.prototype.destroy = function() {
 	this._parent.removeChild(this.container);
+	this.container.destroy();
 }
 
 Emitter.prototype.emitAtLocation = function(x, y) {

@@ -1,6 +1,4 @@
-function Scene_1(stage, w, h, next_scene) {
-	var that = this;
-
+function Scene_1(w, h, next_scene) {
 	this.next_scene_fn = next_scene;
 
 	this.is_running = false;
@@ -16,14 +14,31 @@ function Scene_1(stage, w, h, next_scene) {
 	this.raindrop.lineStyle(4, 0x0033FF, 1);
 	this.raindrop.drawCircle(25, 25, 50);
 
+	this.text_state = {
+		index: 0,
+		elapsed: 0
+	};
+	this.texts = [
+		{ content: "sometimes", delay: 11000, x: 50, y: 100 },
+		{ content: "it rains", delay: 1500, x: 50, y: 350 },
+		{ content: "when I'm sad", delay: 1500, x: 50, y: 600 },
+		{ content: "(dummy advance)", delay: 8000, x: 50, y: 600 }
+	];
+
+	this.elapsed = 0;
+}
+
+Scene_1.prototype.init = function(stage) {
+	var that = this;
+
 	var MIN_EMIT = 2000;
 	this.rainer = new Emitter({
 		parent: stage,
 		num_particles: 5000,
 		x: 0, 
 		y: 0,
-		width: w,
-		height: h,
+		width: this.w,
+		height: this.h,
 		emit_rate: 1700,
 		texture: this.raindrop.generateCanvasTexture(PIXI.SCALE_MODES.DEFAULT, window.devicePixelRatio),
 		on_emit: function(is_manual) {
@@ -38,17 +53,17 @@ function Scene_1(stage, w, h, next_scene) {
 		}
 	});
 
-	this.text_state = {
-		index: 0,
-		elapsed: 0
-	};
-	this.texts = [
-		{ content: "sometimes", delay: 11000, x: 50, y: 100 },
-		{ content: "it rains", delay: 1500, x: 50, y: 350 },
-		{ content: "when I'm sad", delay: 1500, x: 50, y: 600 }
-	];
+	this.messages = [];
+};
 
-	this.elapsed = 0;
+Scene_1.prototype.destroy = function() {
+	this.rainer.destroy();
+	if(this.hint_message) {
+		this.hint_message.destroy();
+	}
+	this.messages.forEach(function(msg) {
+		msg.destroy();
+	})
 }
 
 Scene_1.prototype.update = function(dt, stage) {
@@ -106,9 +121,10 @@ Scene_1.prototype.update = function(dt, stage) {
 
 			message.position.set(text.x, text.y);
 			stage.addChildAt(message, 0);
+			this.messages.push(message);
 
 			if(this.text_state.index === this.texts.length) {
-				// this.next_scene_fn();
+				this.next_scene_fn();
 			}
 		}
 	}

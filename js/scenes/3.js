@@ -1,4 +1,4 @@
-function Scene_3(stage, w, h) {
+function Scene_3(w, h) {
 	this.backgroundColor = 0x061639;
 
 	this.w = w;
@@ -77,7 +77,6 @@ function Scene_3(stage, w, h) {
 
 	this.text.x = 400;
 	this.text.y = 40;
-	stage.addChild(this.text);
 	// this.umbrellas.mask = this.umbrella;
 	// this.umbrella.mask = this.umbrellas;
 	// this.umbrella.anchor.set(0.5, 0.5);
@@ -86,6 +85,12 @@ function Scene_3(stage, w, h) {
 	this.raindrop = new PIXI.Graphics();
 	this.raindrop.lineStyle(2, 0x0033FF, 1);
 	this.raindrop.drawCircle(5, 5, 10);
+
+	this.bob = 0;
+}
+
+Scene_3.prototype.init = function(stage) {
+	stage.addChild(this.text);
 
 	this.rainer = new Emitter({
 		parent: stage,
@@ -99,8 +104,12 @@ function Scene_3(stage, w, h) {
 	});
 
 	stage.addChild(this.umbrellas);
+}
 
-	this.bob = 0;
+Scene_3.prototype.destroy = function() {
+	this.text.destroy();
+	this.rainer.destroy();
+	this.umbrellas.destroy();
 }
 
 Scene_3.prototype.update = function(dt, stage) {

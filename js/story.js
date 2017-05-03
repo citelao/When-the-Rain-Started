@@ -61,7 +61,6 @@ function begin() {
 	// THAT FILTER
 	var shaderCode = document.getElementById("shader").innerHTML;
 	var state = {
-		is_scene_pending: true,
 		current_scene_index: -1,
 		current_scene: null,
 		jitter_shader: new PIXI.Filter('', shaderCode, { 
@@ -76,20 +75,26 @@ function begin() {
 		})
 	};
 	function next_scene() {
-		state.is_scene_pending = false;
+		var last_index = state.current_scene_index;
 		state.current_scene_index += 1;
 		state.current_scene = SCENES[state.current_scene_index];
+
+		state.current_scene.init(stage);
+		if(last_index >= 0) {
+			SCENES[last_index].destroy();
+		}
 	}
 	var SCENES = [
-		// new Scene_1(stage, w, h, next_scene),
+		new Scene_1(w, h, next_scene),
 		// TODO 2
-		new Scene_3(stage, w, h, next_scene)
+		new Scene_3(w, h, next_scene)
 	]
 	next_scene();
 
 	stage.filters = [state.jitter_shader];
 
 	renderer.plugins.interaction.on('mouseup', function(e){
+		state.is_scene_pending = false;
 	    state.current_scene.click(e);
 	});
 
