@@ -1,5 +1,7 @@
-function Scene_1(stage, w, h) {
+function Scene_1(stage, w, h, next_scene) {
 	var that = this;
+
+	this.next_scene_fn = next_scene;
 
 	this.is_running = false;
 	this.hint_timer = 0;
@@ -106,13 +108,7 @@ Scene_1.prototype.update = function(dt, stage) {
 			stage.addChildAt(message, 0);
 
 			if(this.text_state.index === this.texts.length) {
-				// item.after(function() {
-				// 	// TODO switch scenes!
-				// 	draw_car(draw).x(500).y(-300).animate({
-				// 		delay: 500,
-				// 		duration: 3000
-				// 	}).y(300);
-				// })
+				// this.next_scene_fn();
 			}
 		}
 	}
@@ -120,6 +116,5 @@ Scene_1.prototype.update = function(dt, stage) {
 
 Scene_1.prototype.click = function(e) {
 	this.is_running = true;
-
 	this.rainer.emitAtLocation(e.data.originalEvent.offsetX, e.data.originalEvent.offsetY);
 }

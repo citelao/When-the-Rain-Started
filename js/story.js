@@ -44,40 +44,60 @@ function begin() {
 	var renderer = PIXI.autoDetectRenderer(256, 256, {
 		resolution: window.devicePixelRatio
 	});
-
 	document.body.appendChild(renderer.view);
 
-	renderer.view.style.position = "absolute";
-	renderer.view.style.display = "block";
-	// renderer.view.style["margin-left"] = "-20px";
-	// renderer.view.style["margin-top"] = "-20px";
-	// renderer.view.style["margin-bottom"] = "-20px";
-	// renderer.view.style["margin-right"] = "-20px";
 	// renderer.autoResize = true;
 	renderer.resize(window.innerWidth, window.innerHeight);
 	renderer.backgroundColor = 0xFFFFFF;
 
-	var stage = new PIXI.Container();
-
 	var h = renderer.view.height / window.devicePixelRatio;
 	var w = renderer.view.width / window.devicePixelRatio;
+
+	var stage = new PIXI.Container();
+
+	// STATE
+
+
+	// THAT FILTER
+	var shaderCode = document.getElementById("shader").innerHTML;
+	var state = {
+		is_scene_pending: true,
+		current_scene_index: -1,
+		current_scene: null,
+		jitter_shader: new PIXI.Filter('', shaderCode, { 
+			time: {
+				type: "f",
+				value: 0.0
+			},
+			dimensions: {
+				type: "vec2",
+				value: [w, h]
+			}
+		})
+	};
+	function next_scene() {
+		state.is_scene_pending = false;
+		state.current_scene_index += 1;
+		state.current_scene = SCENES[state.current_scene_index];
+	}
 	var SCENES = [
-		// new Scene_1(stage, renderer.view.width, renderer.view.height),
+		// new Scene_1(stage, w, h, next_scene),
 		// TODO 2
-		new Scene_3(stage, w, h)
+		new Scene_3(stage, w, h, next_scene)
 	]
-	var current_scene = SCENES[0];
+	next_scene();
+
+	stage.filters = [state.jitter_shader];
 
 	renderer.plugins.interaction.on('mouseup', function(e){
-	    current_scene.click(e);
+	    state.current_scene.click(e);
 	});
 
 	renderer.plugins.interaction.on('mousemove', function(e) { 
-		if(current_scene.move) {
-			current_scene.move(e);
+		if(state.current_scene.move) {
+			state.current_scene.move(e);
 		}
 	});
-
 
 	// ANIMATE!
 	var last = 0; // STATE
@@ -91,11 +111,13 @@ function begin() {
 			return;
 		}
 
-		current_scene.update(dt, stage);
+		state.current_scene.update(dt, stage);
+		var num_frames = dt / (1/24.1 * 1000);
+		state.jitter_shader.uniforms.time += num_frames;
 
 		renderer.render(stage);
 
-		renderer.backgroundColor = current_scene.backgroundColor;
+		renderer.backgroundColor = state.current_scene.backgroundColor;
 
 		frame = (frame + 1) % FRAMES;
 		// renderer.view.style.filter = "url(#" + JITTER_FILTERS[frame].node.id + ")";
@@ -104,4 +126,5 @@ function begin() {
 		window.requestAnimationFrame(animate);
 	}
 	window.requestAnimationFrame(animate);
+
 }
