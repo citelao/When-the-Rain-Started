@@ -30,7 +30,7 @@ Emitter.prototype.emitAtLocation = function(x, y) {
 		return;
 	}
 
-	this._emit(locs[0]);
+	this._emit(locs[0], true);
 	this.particles[locs[0]].x = x;
 	this.particles[locs[0]].y = y;
 
@@ -58,7 +58,7 @@ Emitter.prototype._getSpawnLocs = function(to_emit, deads) {
 	return locs;
 }
 
-Emitter.prototype._emit = function(i) {
+Emitter.prototype._emit = function(i, is_manual) {
 	this.particles[i] = this._reset_particle();
 
 	if(!this.sprites[i]) {
@@ -68,7 +68,7 @@ Emitter.prototype._emit = function(i) {
 		this.container.addChild(this.sprites[i]);
 	}
 
-	this._on_emit();
+	this._on_emit(is_manual);
 }
 
 Emitter.prototype._reset_particle = function() {
@@ -115,7 +115,7 @@ Emitter.prototype.update = function(delta) {
 		
 
 		for (var i = 0; i < spawn_indeces.length; i++) {
-			this._emit(spawn_indeces[i]);
+			this._emit(spawn_indeces[i], false);
 		}
 		this._last_emit = 0;
 	} else {

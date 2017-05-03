@@ -1,8 +1,8 @@
 function Scene_3(stage, w, h) {
 	this.backgroundColor = 0x061639;
 
-	this.w = w / 2;
-	this.h = h / 2;
+	this.w = w;
+	this.h = h;
 	// this.w = 500;
 	// this.h = 200;
 
@@ -95,16 +95,8 @@ function Scene_3(stage, w, h) {
 		width: this.w,
 		height: this.h,
 		emit_rate: 0.025,
-		texture: this.raindrop.generateCanvasTexture(PIXI.SCALE_MODES.DEFAULT, window.devicePixelRatio),
-		// on_emit: function() {
-		// 	var MAX_EMIT = 0.5;
-		// 	if(that.rainer.emit_rate > MAX_EMIT) {
-		// 		that.rainer.emit_rate *= 0.85;
-		// 	}
-		// }
+		texture: this.raindrop.generateCanvasTexture(PIXI.SCALE_MODES.DEFAULT, window.devicePixelRatio)
 	});
-
-
 
 	stage.addChild(this.umbrellas);
 

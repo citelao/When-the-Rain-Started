@@ -2,6 +2,9 @@ function Scene_1(stage, w, h) {
 	var that = this;
 
 	this.is_running = false;
+	this.hint_timer = 0;
+	this.w = w;
+	this.h = h;
 
 	// BG
 	this.backgroundColor = 0xFFFFFF;
@@ -17,11 +20,15 @@ function Scene_1(stage, w, h) {
 		num_particles: 5000,
 		x: 0, 
 		y: 0,
-		width: w / 2,
-		height: h / 2,
-		emit_rate: 2000,
+		width: w,
+		height: h,
+		emit_rate: 1700,
 		texture: this.raindrop.generateCanvasTexture(PIXI.SCALE_MODES.DEFAULT, window.devicePixelRatio),
-		on_emit: function() {
+		on_emit: function(is_manual) {
+			if(is_manual) {
+				return;
+			}
+
 			var MAX_EMIT = 0.5;
 			if(that.rainer.emit_rate > MAX_EMIT) {
 				that.rainer.emit_rate *= 0.85;
@@ -44,14 +51,31 @@ function Scene_1(stage, w, h) {
 
 Scene_1.prototype.update = function(dt, stage) {
 	if(!this.is_running) {
+		if(this.hint_timer > 7000 && !this.hint_message) {
+			this.hint_message = new PIXI.Text(
+				"(click)",
+			  	{fontFamily: 'Amatic SC', fontSize: 60, fill: "#526287", padding: 40}
+			);
+
+			this.hint_message.anchor.set(0.5, 0.5);
+			this.hint_message.position.set(this.w / 2 - this.hint_message.width / 2, this.h / 2 - this.hint_message.height / 2);
+			stage.addChild(this.hint_message);
+		} 
+
+		this.hint_timer += dt;
 		return;
+	}
+
+	if(this.hint_message) {
+		this.hint_message.destroy();
+		this.hint_message = null;
 	}
 
 	this.rainer.update(dt);
 
 	// BG color
-	var DELAY = 7000;
-	var DURATION = 3000;
+	var DELAY = 10000;
+	var DURATION = 6000;
 	if(this.elapsed < DURATION + DELAY + 100) {
 		this.elapsed += dt;
 		var ease = Math.max(0, Math.min((this.elapsed - DELAY) / DURATION, 1));
