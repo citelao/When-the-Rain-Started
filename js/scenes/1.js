@@ -14,17 +14,6 @@ function Scene_1(w, h, next_scene) {
 	this.raindrop.lineStyle(4, 0x0033FF, 1);
 	this.raindrop.drawCircle(25, 25, 50);
 
-	this.text_state = {
-		index: 0,
-		elapsed: 0
-	};
-	this.texts = [
-		{ content: "sometimes", delay: 11000, x: 50, y: 100 },
-		{ content: "it rains", delay: 1500, x: 50, y: 350 },
-		{ content: "when I'm sad", delay: 1500, x: 50, y: 600 },
-		{ content: "(dummy advance)", delay: 8000, x: 50, y: 600 }
-	];
-
 	this.elapsed = 0;
 }
 
@@ -34,6 +23,7 @@ Scene_1.prototype.init = function(stage) {
 	var MIN_EMIT = 2000;
 	this.rainer = new Emitter({
 		parent: stage,
+		init: false,
 		num_particles: 5000,
 		x: 0, 
 		y: 0,
@@ -53,6 +43,22 @@ Scene_1.prototype.init = function(stage) {
 		}
 	});
 
+	this.texter = new Texter({
+		parent: stage,
+		width: this.w,
+		height: this.h,
+		text: [
+			{ content: "sometimes", delay: 11000, x: 0.1, y: 0.1 },
+			{ content: "it rains", delay: 1500, x: 0.1, y: 0.4 },
+			{ content: "when I'm sad", delay: 1500, x: 0.1, y: 0.7 },
+			{ content: "(dummy advance)", delay: 8000, x: 0.1, y: 0.8, duration: 1 }
+		],
+		fontSize: 0.25,
+		on_complete: function() {
+			that.next_scene_fn();
+		}
+	});
+
 	this.messages = [];
 };
 
@@ -61,9 +67,7 @@ Scene_1.prototype.destroy = function() {
 	if(this.hint_message) {
 		this.hint_message.destroy();
 	}
-	this.messages.forEach(function(msg) {
-		msg.destroy();
-	})
+	this.texter.destroy();
 }
 
 Scene_1.prototype.update = function(dt, stage) {
@@ -89,6 +93,7 @@ Scene_1.prototype.update = function(dt, stage) {
 	}
 
 	this.rainer.update(dt);
+	this.texter.update(dt);
 
 	// BG color
 	var DELAY = 10000;
@@ -100,33 +105,6 @@ Scene_1.prototype.update = function(dt, stage) {
 		var green = ((1 - ease) * 0xFF00 + ease * 0x1600) & 0xFF00;
 		var blue = ((1 - ease) * 0xFF + ease * 0x39) & 0xFF;
 		this.backgroundColor = red + green + blue;
-	}
-
-	// Draw the words onscreen
-	if(this.text_state.index < this.texts.length) {
-		this.text_state.elapsed += dt;
-		if(this.text_state.elapsed > this.texts[this.text_state.index].delay) {
-			var text = this.texts[this.text_state.index];
-
-			this.text_state.index += 1;
-			this.text_state.elapsed = 0;
-
-			// show text
-			var duration = text.duration || 1200;
-
-			var message = new PIXI.Text(
-				text.content,
-			  	{fontFamily: 'Amatic SC', fontSize: 300, fill: "#526287", padding: 40}
-			);
-
-			message.position.set(text.x, text.y);
-			stage.addChildAt(message, 0);
-			this.messages.push(message);
-
-			if(this.text_state.index === this.texts.length) {
-				this.next_scene_fn();
-			}
-		}
 	}
 }
 

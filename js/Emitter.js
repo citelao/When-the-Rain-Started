@@ -1,6 +1,10 @@
 function Emitter(o) {
 	this.x = o.x;
 	this.y = o.y;
+	this.init = o.init;
+	if(typeof o.init === "undefined") {
+		this.init = true;
+	}
 	this.width = o.width;
 	this.height = o.height;
 	this.num_particles = o.num_particles;
@@ -16,6 +20,13 @@ function Emitter(o) {
 
 	this.container = new PIXI.Container();
 	this._parent.addChild(this.container);
+
+	if(this.init) {
+		var spawn_indeces = this._getSpawnLocs(this.num_particles / 10);
+		for (var i = 0; i < spawn_indeces.length; i++) {
+			this._emit(spawn_indeces[i], true);
+		}
+	}
 }
 
 Emitter.prototype.destroy = function() {
@@ -114,7 +125,6 @@ Emitter.prototype.update = function(delta) {
 
 		var spawn_indeces = this._getSpawnLocs(to_emit, deads);
 		
-
 		for (var i = 0; i < spawn_indeces.length; i++) {
 			this._emit(spawn_indeces[i], false);
 		}
