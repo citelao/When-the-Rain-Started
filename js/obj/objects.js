@@ -52,3 +52,43 @@ function make_umbrella(color) {
 
 	return umbrella;
 }
+
+function make_building() {
+	var BUILDING_HEIGHT = 200;
+	var BUILDING_WIDTH = 200;
+	var FENCE_WIDTH = 10;
+
+	var building = new PIXI.Graphics();
+	building.beginFill(0x382412);
+	building.drawRect(0, 0, BUILDING_WIDTH, BUILDING_HEIGHT);
+	building.beginFill(0x69411D);
+	building.drawRect(FENCE_WIDTH, FENCE_WIDTH, 
+		BUILDING_WIDTH - 2 * FENCE_WIDTH, 
+		BUILDING_HEIGHT - 2 * FENCE_WIDTH);
+
+	var RAD_PROB = 0.3;
+	var CHIMNEY_PROB = 0.5;
+	var accoutrement = Math.random();
+	if(accoutrement < CHIMNEY_PROB) {
+		// DRAW CHIMNEY
+		var y = 20 + Math.random() * (BUILDING_HEIGHT - 4 * FENCE_WIDTH - 60 - 50);
+		var x = 20;
+		building.beginFill(0x2c1b0c);
+		building.drawRect(x, y, 40, 40);
+	}
+	// else if(accoutrement < CHIMNEY_PROB + RAD_PROB) {
+	// 	// DRAW RADIATOR
+	// 	var y = 20 + Math.random() * (BUILDING_HEIGHT - 4 * FENCE_WIDTH - 60 - 50);
+	// 	var x = 20;
+	// 	building.beginFill(0x2c1b0c);
+	// 	building.drawCircle(x + 20, y, 20);
+	// }
+
+	if(Math.random() > 0.3) {
+		building.beginFill(0xa6672e);
+		building.drawRect(BUILDING_WIDTH - 2 * FENCE_WIDTH - 40, 40,
+			40, 80);
+	}
+
+	return building;
+}

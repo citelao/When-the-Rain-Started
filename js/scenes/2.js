@@ -14,7 +14,14 @@ function Scene_2(w, h, next_scene) {
 	this.backgroundColor = 0x061639;
 
 	// RAINDROP
-	this.raindrop = make_raindrop(15);
+	this.raindrop = make_raindrop(4);
+
+	this.buildings = [];
+	this.COL_HEIGHT = Math.floor((this.h + 230 + 50) / 230);
+	var num_buildings = 2 * this.COL_HEIGHT;
+	for (var i = 0; i < num_buildings; i++) {
+		this.buildings.push(make_building());
+	}
 }
 
 Scene_2.prototype.init = function(stage) {
@@ -32,6 +39,11 @@ Scene_2.prototype.init = function(stage) {
 		texture: this.raindrop.generateCanvasTexture(PIXI.SCALE_MODES.DEFAULT, window.devicePixelRatio)
 	});
 
+	for (var i = 0; i < this.buildings.length; i++) {
+		this.buildings[i].y = (i % this.COL_HEIGHT) * 230 - 50;
+		this.buildings[i].x = 20 + Math.floor(i / this.COL_HEIGHT) * 230;
+		stage.addChild(this.buildings[i]);
+	}
 	
 	this.texter = new Texter({
 		parent: stage,
@@ -39,11 +51,11 @@ Scene_2.prototype.init = function(stage) {
 		height: this.h,
 		fontSize: 0.25,
 		text: [
-			{ content: "I like that", delay: 3000, x: 0.3, y: 0.1 },
-			{ content: "because it feels", delay: 1500, x: 0.3, y: 0.3 },
-			{ content: "like the world", delay: 1500, x: 0.3, y: 0.5 },
-			{ content: "cries with me", delay: 1500, x: 0.3, y: 0.7 },
-			{ content: "(dummy advance)", delay: 4000, x: 0.3, y: 0.9, duration: 1 }
+			{ content: "I like that", delay: 3000, x: 470, y: 0.1 },
+			{ content: "because it feels", delay: 1500, x: 470, y: 0.3 },
+			{ content: "like the world", delay: 1500, x: 470, y: 0.5 },
+			{ content: "cries with me", delay: 1500, x: 470, y: 0.7 },
+			{ content: "(dummy advance)", delay: 4000, x: 470, y: 0.9, duration: 1 }
 		],
 		fontSize: 0.25,
 		on_complete: function() {
@@ -55,6 +67,10 @@ Scene_2.prototype.init = function(stage) {
 Scene_2.prototype.destroy = function() {
 	this.rainer.destroy();
 	this.texter.destroy();
+
+	for (var i = 0; i < this.buildings.length; i++) {
+		this.buildings[i].destroy();
+	}
 }
 
 Scene_2.prototype.update = function(dt, stage) {
