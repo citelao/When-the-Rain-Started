@@ -16,7 +16,5 @@
     "tests"
   ],
   "dependencies": {
-    "svg.js": "^2.5.3",
-    "svg.filter.js": "^2.0.2"
   }
 }
