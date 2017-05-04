@@ -1,25 +1,4 @@
 ////
-// Generate SVG jitter filters
-////
-function generate_filters(drawable, frames) {
-	var filters = [];
-	for(var i = 0; i < frames; i++) {
-		drawable.filter(function(add) {
-			var dp = add.turbulence(0.01, 6, i, "noStitch", "fractalNoise");
-			var turb = dp.displacementMap(turb, 4, "R", "G").in(add.source);
-		});
-		filters[i] = drawable.filterer;
-		drawable.unfilter();
-	}
-	return filters;
-}
-var draw = SVG('filters');
-var nest = draw.nested();
-
-var FRAMES = 8;
-var JITTER_FILTERS = generate_filters(nest, FRAMES);
-
-////
 // Load fonts
 ////
 WebFont.load({
