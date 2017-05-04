@@ -65,7 +65,7 @@ function begin() {
 		}
 	}
 	var SCENES = [
-		// new Scene_1(w, h, next_scene),
+		new Scene_1(w, h, next_scene),
 		new Scene_2(w, h, next_scene),
 		new Scene_3(w, h, next_scene),
 		new Scene_4(w, h, next_scene),

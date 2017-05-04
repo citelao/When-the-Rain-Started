@@ -51,7 +51,7 @@ Scene_1.prototype.init = function(stage) {
 			{ content: "when I'm sad", delay: 1500, x: 0.1, y: 0.7 },
 			{ content: "(dummy advance)", delay: 8000, x: 0.1, y: 0.8, duration: 1 }
 		],
-		fontSize: 0.25,
+		fontSize: 0.3,
 		on_complete: function() {
 			that.next_scene_fn();
 		}

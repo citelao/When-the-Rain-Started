@@ -92,3 +92,52 @@ function make_building() {
 
 	return building;
 }
+
+function make_building_shadow() {
+	var shadow = new PIXI.Graphics();
+	shadow.beginFill(0x111111);
+	// shadow.lineStyle(4, 0x0033FF, 1);
+
+	var SHADOW_HEIGHT = 300;
+	var BUILDING_HEIGHT = 200;
+	shadow.drawPolygon([
+		0,200,
+		SHADOW_HEIGHT - BUILDING_HEIGHT, SHADOW_HEIGHT,
+		SHADOW_HEIGHT, SHADOW_HEIGHT,
+		SHADOW_HEIGHT, SHADOW_HEIGHT - BUILDING_HEIGHT,
+		200,0
+	]);
+	shadow.closePath();
+	return shadow;
+}
+
+function make_car() {
+	var CAR_WIDTH = 60;
+
+	var car = new PIXI.Graphics();
+	car.beginFill(0x3B82D2);
+	car.drawRect(0, 0, CAR_WIDTH, 120);
+	car.beginFill(0x1C4F89);
+	car.drawRect(0, 40, CAR_WIDTH, 60);
+
+	return car;
+}
+
+function make_car_shadow() {
+	var CAR_WIDTH = 60;
+	var CAR_HEIGHT = 120;
+	var shadow = new PIXI.Graphics();
+	shadow.beginFill(0x111111);
+	// shadow.lineStyle(4, 0x0033FF, 1);
+
+	var SHADOW_HEIGHT = 50;
+	shadow.drawPolygon([
+		0, CAR_HEIGHT,
+		SHADOW_HEIGHT, CAR_HEIGHT + SHADOW_HEIGHT,
+		SHADOW_HEIGHT + CAR_WIDTH,  CAR_HEIGHT + SHADOW_HEIGHT,
+		CAR_WIDTH + SHADOW_HEIGHT, SHADOW_HEIGHT,
+		CAR_WIDTH, 0
+	]);
+	shadow.closePath();
+	return shadow;
+}
