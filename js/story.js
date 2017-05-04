@@ -48,20 +48,24 @@ function begin() {
 				type: "vec2",
 				value: [w, h]
 			}
-		})
+		}),
+		mouse: {
+			x: 0,
+			y: 0
+		}
 	};
 	function next_scene() {
 		var last_index = state.current_scene_index;
 		state.current_scene_index += 1;
 		state.current_scene = SCENES[state.current_scene_index];
 
-		state.current_scene.init(stage);
+		state.current_scene.init(stage, state);
 		if(last_index >= 0) {
 			SCENES[last_index].destroy();
 		}
 	}
 	var SCENES = [
-		new Scene_1(w, h, next_scene),
+		// new Scene_1(w, h, next_scene),
 		new Scene_2(w, h, next_scene),
 		new Scene_3(w, h, next_scene),
 		new Scene_4(w, h, next_scene),
@@ -77,6 +81,9 @@ function begin() {
 	});
 
 	renderer.plugins.interaction.on('mousemove', function(e) { 
+		state.mouse.x = e.data.originalEvent.offsetX;
+		state.mouse.y = e.data.originalEvent.offsetY;
+
 		if(state.current_scene.move) {
 			state.current_scene.move(e);
 		}

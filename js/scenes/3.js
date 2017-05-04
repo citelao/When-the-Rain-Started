@@ -4,8 +4,7 @@ function Scene_3(w, h, next_scene) {
 
 	this.w = w;
 	this.h = h;
-	// this.w = 500;
-	// this.h = 200;
+
 
 	var colors = [
 		0x3B5BA2,
@@ -43,7 +42,10 @@ function Scene_3(w, h, next_scene) {
 	this.bob = 0;
 }
 
-Scene_3.prototype.init = function(stage) {
+Scene_3.prototype.init = function(stage, state) {
+	this.openX = state.mouse.x;
+	this.openY = state.mouse.y;
+
 	var that = this;
 	this.texter = new Texter({
 		parent: stage,
