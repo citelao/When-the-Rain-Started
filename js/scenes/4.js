@@ -15,9 +15,7 @@ function Scene_4(w, h, next_scene) {
 	this.backgroundColor = 0x061639;
 
 	// RAINDROP
-	this.raindrop = new PIXI.Graphics();
-	this.raindrop.lineStyle(4, 0x0033FF, 1);
-	this.raindrop.drawCircle(15, 15, 30);
+	this.raindrop = make_raindrop(5);
 
 	this.text_state = {
 		index: 0,

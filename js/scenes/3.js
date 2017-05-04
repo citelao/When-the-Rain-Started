@@ -7,53 +7,30 @@ function Scene_3(w, h, next_scene) {
 	// this.w = 500;
 	// this.h = 200;
 
-	// Generate an umbrella shape
-	// lazy: http://www.mathopenref.com/coordpolycalc.html
-	var umbrella_pts = [
-		[ 44,2 ],
-		[ 20,2 ],
-		[ 2,20 ],
-		[ 2,44 ],
-		[ 20,62 ],
-		[ 44,62 ],
-		[ 62,44 ],
-		[ 62,20 ]
+	var colors = [
+		0x3B5BA2,
+		0x1E5226,
+		0x283E6E,
+		0x6E284C
 	];
-	var umbrella = new PIXI.Graphics();
-	umbrella.beginFill(0x111111);
-	umbrella.moveTo(umbrella_pts[0][0], umbrella_pts[0][1]);
-	for (var i = 0; i < umbrella_pts.length; i++) {
-		var second = i === umbrella_pts.length - 1
-			? umbrella_pts[0]
-			: umbrella_pts[i + 1];
-		var first = umbrella_pts[i];
-
-		var mid = [
-			(second[0] + first[0]) / 2,
-			(second[1] + first[1]) / 2,
-		];
-		var WEIGHT = 0.5;
-		var int = [
-			(1 - WEIGHT) * mid[0] + WEIGHT * 32,
-			(1 - WEIGHT) * mid[1] + WEIGHT * 32,
-		];
-		umbrella.bezierCurveTo(first[0], first[1], int[0], int[1], second[0], second[1]);
+	var texes = [];
+	for (var i = 0; i < colors.length; i++) {
+		var umbrella = make_umbrella(colors[i]);
+		texes.push(umbrella.generateCanvasTexture(PIXI.SCALE_MODES.DEFAULT, window.devicePixelRatio))
 	}
-	umbrella.closePath();
-	umbrella.endFill();
-	var tex = umbrella.generateCanvasTexture(PIXI.SCALE_MODES.DEFAULT, window.devicePixelRatio);
 
 	this.umbrellas = new PIXI.Sprite();
 	// this.umbrellas.x = 500;
 	// this.umbrellas.y = 100;
 	const UMBRELLAS = 400;
 	for (var i = 0; i < UMBRELLAS; i++) {
+		var tex = texes[Math.round(Math.random() * texes.length)];
 		var clone = new PIXI.Sprite(tex);
 		clone.anchor.set(0.5, 0.5);
 		clone.x = Math.random() * this.w;
 		clone.y = Math.random() * this.h;
 		this.umbrellas.addChild(clone);
-		clone.rotation = Math.random();
+		clone.rotation = Math.random() * 2 * Math.PI;
 	}
 
 	// this.umbrellas.mask = this.umbrella;
@@ -77,7 +54,8 @@ Scene_3.prototype.init = function(stage) {
 			{ content: "and I know", delay: 1000, x: 0.3, y: 0.1 },
 			{ content: "that only I", delay: 1500, x: 0.3, y: 0.3 },
 			{ content: "control my mood", delay: 1500, x: 0.3, y: 0.5, fontSize: 0.2 },
-			{ content: "(dummy advance)", delay: 4000, x: 0.3, y: 0.9, duration: 1 }
+			{ content: "(dummy advance)", delay: 8000, x: 0.3, y: 0.9, duration: 1 },
+			// { content: "(dummy advance DEBUG)", delay: 40000, x: 0.3, y: 0.9, duration: 1 }
 		],
 		fontSize: 0.25,
 		on_complete: function() {
@@ -133,16 +111,45 @@ Scene_3.prototype.update = function(dt, stage) {
 				: that.h + 32;
 		}
 
-		if(child.y > that.openY) {
-			child.alpha = 0;
-		} else if(child.y > that.openY - 60) {
-			var degree = (that.openY - child.y) / 60;
-			child.alpha = 1;
-			child.scale.x = degree;
-			child.scale.y = degree;
+		var xPt = child.x - that.openX;
+		var yPt = child.y - that.openY;
+		var radius = Math.pow(xPt, 2) + Math.pow(yPt, 2);
+		var CLOSE_RADIUS = 40000;
+		if(radius < CLOSE_RADIUS) {
+			var angle = Math.atan2(yPt, xPt);
+			var percentage = 1 - (radius / CLOSE_RADIUS);
+
+			var RUN_SPEED = 0.5;
+			child.x += Math.cos(angle) * RUN_SPEED * percentage * dt;
+			child.y += Math.sin(angle) * RUN_SPEED * percentage * dt;
 		} else {
 			child.alpha = 1;
 		}
+
+		// var yDistance = Math.pow(child.y - that.openY, 2);
+		// var xDistance = Math.pow(child.x - that.openX, 2);
+		// var OPEN_MAX = 40000;
+		// if(xDistance + yDistance < OPEN_MIN) {
+		// 	child.alpha = 0;
+		// } else if(xDistance + yDistance < OPEN_MAX) {
+		// 	var degree = (xDistance + yDistance - OPEN_MIN) / (OPEN_MAX - OPEN_MIN);
+		// 	child.alpha = 1;
+		// 	child.scale.x = degree;
+		// 	child.scale.y = degree;
+		// } else {
+		// 	child.alpha = 1;
+		// }
+		
+		// if(child.y > that.openY) {
+		// 	child.alpha = 0;
+		// } else if(child.y > that.openY - 60) {
+		// 	var degree = (that.openY - child.y) / 60;
+		// 	child.alpha = 1;
+		// 	child.scale.x = degree;
+		// 	child.scale.y = degree;
+		// } else {
+		// 	child.alpha = 1;
+		// }
 	});
 }
 
@@ -154,4 +161,5 @@ Scene_3.prototype.click = function(e) {
 
 Scene_3.prototype.move = function(e) {
 	this.openY = e.data.originalEvent.offsetY;
+	this.openX = e.data.originalEvent.offsetX;
 }
