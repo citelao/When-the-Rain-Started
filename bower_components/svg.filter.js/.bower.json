@@ -1,0 +1,38 @@
+{
+  "name": "svg.filter.js",
+  "version": "2.0.2",
+  "homepage": "https://github.com/wout/svg.filter.js",
+  "authors": [
+    "Wout Fierens"
+  ],
+  "description": "A plugin for svg.js adding filter functionality",
+  "main": [
+    "./dist/svg.filter.js"
+  ],
+  "keywords": [
+    "svg.js",
+    "filter",
+    "effect"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "svg.js": "^2.2.5"
+  },
+  "_release": "2.0.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "2.0.2",
+    "commit": "3b7761891c6ed960d7b3be967becd7fa47178aa5"
+  },
+  "_source": "https://github.com/wout/svg.filter.js.git",
+  "_target": "^2.0.2",
+  "_originalSource": "svg.filter.js",
+  "_direct": true
+}
