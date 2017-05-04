@@ -1,4 +1,5 @@
-function Scene_3(w, h) {
+function Scene_3(w, h, next_scene) {
+	this.next_scene_fn = next_scene;
 	this.backgroundColor = 0x061639;
 
 	this.w = w;
@@ -55,42 +56,34 @@ function Scene_3(w, h) {
 		clone.rotation = Math.random();
 	}
 
-	var text = new PIXI.Text(
-		"and I know",
-	  	{fontFamily: 'Amatic SC', fontSize: 300, fill: "#526287", padding: 40}
-	);
-	var only = new PIXI.Text(
-		"that only I",
-	  	{fontFamily: 'Amatic SC', fontSize: 300, fill: "#526287", padding: 40}
-	);
-	var control = new PIXI.Text(
-		"control my mood",
-	  	{fontFamily: 'Amatic SC', fontSize: 200, fill: "#526287", padding: 40}
-	);
-	only.y = 300;
-	control.y = 600;
-	// text.mask = this.umbrellas;
-	this.text = new PIXI.Container();
-	this.text.addChild(text);
-	this.text.addChild(only);
-	this.text.addChild(control);
-
-	this.text.x = 400;
-	this.text.y = 40;
 	// this.umbrellas.mask = this.umbrella;
 	// this.umbrella.mask = this.umbrellas;
 	// this.umbrella.anchor.set(0.5, 0.5);
 
 	// this.umbrella.addChild(this.umbrellas);
-	this.raindrop = new PIXI.Graphics();
-	this.raindrop.lineStyle(2, 0x0033FF, 1);
-	this.raindrop.drawCircle(5, 5, 10);
+	this.raindrop = make_raindrop(5);
 
 	this.bob = 0;
 }
 
 Scene_3.prototype.init = function(stage) {
-	stage.addChild(this.text);
+	var that = this;
+	this.texter = new Texter({
+		parent: stage,
+		width: this.w,
+		height: this.h,
+		fontSize: 0.3,
+		text: [
+			{ content: "and I know", delay: 1000, x: 0.3, y: 0.1 },
+			{ content: "that only I", delay: 1500, x: 0.3, y: 0.3 },
+			{ content: "control my mood", delay: 1500, x: 0.3, y: 0.5, fontSize: 0.2 },
+			{ content: "(dummy advance)", delay: 4000, x: 0.3, y: 0.9, duration: 1 }
+		],
+		fontSize: 0.25,
+		on_complete: function() {
+			that.next_scene_fn();
+		}
+	});
 
 	this.rainer = new Emitter({
 		parent: stage,
@@ -107,13 +100,14 @@ Scene_3.prototype.init = function(stage) {
 }
 
 Scene_3.prototype.destroy = function() {
-	this.text.destroy();
+	this.texter.destroy();
 	this.rainer.destroy();
 	this.umbrellas.destroy();
 }
 
 Scene_3.prototype.update = function(dt, stage) {
 	this.rainer.update(dt);
+	this.texter.update(dt);
 
 	var that = this;
 	var BOUNCE_AMOUNT = 0.06;

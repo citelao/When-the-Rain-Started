@@ -22,9 +22,10 @@ function Emitter(o) {
 	this._parent.addChild(this.container);
 
 	if(this.init) {
-		var spawn_indeces = this._getSpawnLocs(this.num_particles / 10);
+		var spawn_indeces = this._getSpawnLocs(this.num_particles / 5);
 		for (var i = 0; i < spawn_indeces.length; i++) {
 			this._emit(spawn_indeces[i], true);
+			this.particles[i].age = Math.random() * this.particles[i].lifetime
 		}
 	}
 }

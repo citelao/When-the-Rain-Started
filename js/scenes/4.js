@@ -29,7 +29,7 @@ function Scene_4(w, h, next_scene) {
 // I only control a few raindrops
 // And the whole universe is crying
 	this.texts = [
-		{ content: "but sometimes", delay: 3000, x: 50, y: 100 },
+		{ content: "but sometimes", delay: 1000, x: 50, y: 100 },
 		{ content: "it feels like", delay: 1500, x: 50, y: 250 },
 		{ content: "I only control", delay: 1500, x: 50, y: 400 },
 		{ content: "a few raindrops", delay: 1500, x: 50, y: 550 },

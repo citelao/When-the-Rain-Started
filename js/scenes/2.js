@@ -14,9 +14,7 @@ function Scene_2(w, h, next_scene) {
 	this.backgroundColor = 0x061639;
 
 	// RAINDROP
-	this.raindrop = new PIXI.Graphics();
-	this.raindrop.lineStyle(4, 0x0033FF, 1);
-	this.raindrop.drawCircle(15, 15, 30);
+	this.raindrop = make_raindrop(15);
 }
 
 Scene_2.prototype.init = function(stage) {
@@ -39,12 +37,13 @@ Scene_2.prototype.init = function(stage) {
 		parent: stage,
 		width: this.w,
 		height: this.h,
+		fontSize: 0.25,
 		text: [
-			{ content: "I like that", delay: 3000, x: 50, y: 100 },
-			{ content: "because it feels", delay: 1500, x: 50, y: 250 },
-			{ content: "like the world", delay: 1500, x: 50, y: 400 },
-			{ content: "is crying with me", delay: 1500, x: 50, y: 550 },
-			{ content: "(dummy advance)", delay: 4000, x: 50, y: 600, duration: 1 }
+			{ content: "I like that", delay: 3000, x: 0.3, y: 0.1 },
+			{ content: "because it feels", delay: 1500, x: 0.3, y: 0.3 },
+			{ content: "like the world", delay: 1500, x: 0.3, y: 0.5 },
+			{ content: "cries with me", delay: 1500, x: 0.3, y: 0.7 },
+			{ content: "(dummy advance)", delay: 4000, x: 0.3, y: 0.9, duration: 1 }
 		],
 		fontSize: 0.25,
 		on_complete: function() {
