@@ -1,6 +1,9 @@
-function make_raindrop(radius) {
+function make_raindrop(radius, color) {
+	if(!color) {
+		color = 0x0033FF;
+	}
 	var raindrop = new PIXI.Graphics();
-	raindrop.lineStyle(4, 0x0033FF, 1);
+	raindrop.lineStyle(4, color, 1);
 	raindrop.drawCircle(radius, radius, radius * 2);
 
 	return raindrop;

@@ -13,6 +13,8 @@ function Scene_2(w, h, next_scene) {
 	// BG
 	this.backgroundColor = 0x061639;
 
+	this.lightning_timer = 0;
+
 	// RAINDROP
 	this.raindrop = make_raindrop(4);
 
@@ -67,8 +69,8 @@ Scene_2.prototype.init = function(stage) {
 		text: [
 			{ content: "I like that.", delay: 3000, x: offset, y: 0.1 },
 			{ content: "It feels like the world", delay: 1500, x: offset, y: 0.6, fontSize: 0.10 },
-			{ content: "cries with me.", delay: 1500, x: offset, y: 0.7, fontSize: 0.10 },
-			{ content: "(dummy advance)", delay: 4000, x: offset, y: 0.9, duration: 1 }
+			{ content: "cries with me.", delay: 2000, x: offset, y: 0.7, fontSize: 0.10 },
+			{ content: "(dummy advance)", delay: 6000, x: offset, y: 0.9, duration: 1 }
 		],
 		fontSize: 0.25,
 		on_complete: function() {
@@ -113,16 +115,28 @@ Scene_2.prototype.destroy = function() {
 
 }
 
+Scene_2.prototype._lightning = function() {
+	this.backgroundColor = 0xFFFFFF;
+	this.shadow_container.alpha = 1;
+	this.shadow.alpha = 1;
+
+	this.lightning_timer = 0;
+}
+
 Scene_2.prototype.update = function(dt, stage) {
 	this.rainer.update(dt);
 	this.texter.update(dt);
 
 	this.lightning_timer += dt;
-	if(this.lightning_timer > 150) {
+	if(this.lightning_timer > 3500) {
+		if(Math.random() > 0.99 - ((this.lightning_timer - 4000) / 4000)) {
+			this._lightning();
+		}
+	} else if(this.lightning_timer > 200) {
+		this.backgroundColor = 0x061639;
 		this.shadow_container.alpha = 0;
 		this.shadow.alpha = 0;
-		this.backgroundColor = 0x061639;
-	} 
+	}
 
 	if(this.car === null) {
 		return;
@@ -133,9 +147,5 @@ Scene_2.prototype.update = function(dt, stage) {
 }
 
 Scene_2.prototype.click = function(e) {
-	this.backgroundColor = 0xFFFFFF;
-	this.shadow_container.alpha = 1;
-	this.shadow.alpha = 1;
-
-	this.lightning_timer = 0;
+	this._lightning();
 }
