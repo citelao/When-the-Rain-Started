@@ -77,7 +77,10 @@ function begin() {
 
 	renderer.plugins.interaction.on('mouseup', function(e){
 		state.is_scene_pending = false;
-	    state.current_scene.click(e);
+
+		if(state.current_scene.click) {
+			state.current_scene.click(e);
+		}
 	});
 
 	renderer.plugins.interaction.on('mousemove', function(e) { 

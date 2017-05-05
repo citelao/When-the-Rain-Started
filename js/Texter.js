@@ -6,6 +6,8 @@ function Texter(o) {
 	this.text = o.text;
 	this.fontSize = o.fontSize || 60;
 
+	this.center = o.center || false;
+
 	this._parent = o.parent;
 	this._on_complete = o.on_complete || function() {};
 
@@ -69,6 +71,10 @@ Texter.prototype.update = function(dt) {
 		  	}
 		);
 		message.alpha = 0;
+
+		if(this.center) {
+			message.anchor.set(0.5, 0.5);
+		}
 
 		var x = current_text.x <= 1
 			? current_text.x * this.width
