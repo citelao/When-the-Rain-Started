@@ -17,6 +17,23 @@ function Scene_1(w, h, next_scene) {
 
 Scene_1.prototype.init = function(stage) {
 	var that = this;
+	
+	this.texter = new Texter({
+		parent: stage,
+		width: this.w,
+		height: this.h,
+		text: [
+			{ content: "sometimes", delay: 11000, x: 0.1, y: 0.1 },
+			{ content: "it rains", delay: 1500, x: 0.1, y: 0.4 },
+			{ content: "when I'm sad", delay: 1500, x: 0.1, y: 0.7 },
+			{ content: "(dummy advance)", delay: 8000, x: 0.1, y: 0.8, duration: 1 }
+		],
+		fontSize: 0.3,
+		on_complete: function() {
+			that.next_scene_fn();
+		}
+	});
+
 
 	var MIN_EMIT = 2000;
 	this.rainer = new Emitter({
@@ -40,24 +57,6 @@ Scene_1.prototype.init = function(stage) {
 			}
 		}
 	});
-
-	this.texter = new Texter({
-		parent: stage,
-		width: this.w,
-		height: this.h,
-		text: [
-			{ content: "sometimes", delay: 11000, x: 0.1, y: 0.1 },
-			{ content: "it rains", delay: 1500, x: 0.1, y: 0.4 },
-			{ content: "when I'm sad", delay: 1500, x: 0.1, y: 0.7 },
-			{ content: "(dummy advance)", delay: 8000, x: 0.1, y: 0.8, duration: 1 }
-		],
-		fontSize: 0.3,
-		on_complete: function() {
-			that.next_scene_fn();
-		}
-	});
-
-	this.messages = [];
 };
 
 Scene_1.prototype.destroy = function() {
