@@ -35,7 +35,8 @@ Scene_5.prototype.init = function(stage) {
 			{ content: "the", delay: 500, x: 0.1, y: 0.2 },
 			{ content: "whole universe", delay: 400, x: 0.22, y: 0.2, fontSize: 0.3 },
 			{ content: "is raining.", delay: 2000, x: 0.1, y: 0.42 },
-			{ content: "(end)", delay: 20000, x: 0.1, y: 0.8, fontSize: 0.05 }
+			{ content: "(end)", delay: 20000, x: 0.1, y: 0.8, fontSize: 0.05 },
+			{ content: "by Ben Stolovitz", delay: 500, x: 0.6, y: 0.8, fontSize: 0.05 }
 		]
 	});
 
