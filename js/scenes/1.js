@@ -108,4 +108,7 @@ Scene_1.prototype.update = function(dt, stage) {
 Scene_1.prototype.click = function(e) {
 	this.is_running = true;
 	this.rainer.emitAtLocation(e.data.originalEvent.offsetX, e.data.originalEvent.offsetY);
+
+	var bg = document.getElementById("bg_audio");
+	bg.play();
 }
