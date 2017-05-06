@@ -56,7 +56,7 @@ Scene_3.prototype.init = function(stage, state) {
 			{ content: "and I know", delay: 1000, x: 0.1, y: 0.1 },
 			{ content: "that only I", delay: 2000, x: 0.2, y: 0.4 },
 			{ content: "control my mood", delay: 2000, x: 0.4, y: 0.7, fontSize: 0.2 },
-			{ content: "(dummy advance)", delay: 10000, x: 0.3, y: 0.9, duration: 1 },
+			{ content: "(dummy advance)", delay: 9000, x: 0.3, y: 0.9, duration: 1 },
 			// { content: "(dummy advance DEBUG)", delay: 40000, x: 0.3, y: 0.9, duration: 1 }
 		],
 		on_complete: function() {
